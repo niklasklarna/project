@@ -1,8 +1,0 @@
-jar cf customers.jar customers.class
-jar cf orders.jar orders.class
-jar cf managers.jar managers.class
-jar cf employees.jar employees.class
-jar cf departments.jar departments.class
-
-rm *.class
- 
