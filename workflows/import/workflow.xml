@@ -1,0 +1,64 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="${jobName}">
+    <start to="sqoop-importTable1"/>
+    <action name="sqoop-importTable1">
+
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+                <job-tracker>${jobTracker}</job-tracker>
+                <name-node>${nameNode}</name-node>
+                <prepare>
+                      <delete path="${nameNode}/user/niklas.andersen/imports/orders"/>
+                </prepare>
+                <command>import --connect jdbc:postgresql://10.27.10.66/sourcedb --username niklas --password hejsan --driver org.postgresql.Driver --connection-manager org.apache.sqoop.manager.GenericJdbcManager --table orders --as-sequencefile --jar-file orders.jar --class-name orders --target-dir /user/niklas.andersen/imports/orders</command>
+                <file>/user/niklas.andersen/workflows/import/table_jars/orders.jar</file>
+        </sqoop>
+        <ok to="sqoop-importTable2"/>
+        <error to="fail"/>
+    </action> 
+    <action name="sqoop-importTable2">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+                <job-tracker>${jobTracker}</job-tracker>
+                <name-node>${nameNode}</name-node>
+                <prepare>
+                      <delete path="${nameNode}/user/niklas.andersen/imports/customers"/>
+                </prepare>
+                <command>import --connect jdbc:postgresql://10.27.10.66/sourcedb --username niklas --password hejsan --driver org.postgresql.Driver --connection-manager org.apache.sqoop.manager.GenericJdbcManager --table customers --as-sequencefile --jar-file customers.jar --class-name customers --target-dir /user/niklas.andersen/imports/customers</command>
+                <file>/user/niklas.andersen/workflows/import/table_jars/customers.jar</file>
+        </sqoop>
+        <ok to="sqoop-importTable3"/>
+        <error to="fail"/>
+    </action> 
+    <action name="sqoop-importTable3">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+                <job-tracker>${jobTracker}</job-tracker>
+                <name-node>${nameNode}</name-node>
+                <prepare>
+                      <delete path="${nameNode}/user/niklas.andersen/imports/managers"/>
+                </prepare>
+                <command>import --connect jdbc:postgresql://10.27.10.66/sourcedb --username niklas --password hejsan --driver org.postgresql.Driver --connection-manager org.apache.sqoop.manager.GenericJdbcManager --table managers --as-sequencefile --jar-file managers.jar --class-name managers --target-dir /user/niklas.andersen/imports/managers</command>
+                <file>/user/niklas.andersen/workflows/import/table_jars/managers.jar</file>
+        </sqoop>
+        <ok to="sqoop-importTable4"/>
+        <error to="fail"/>
+    </action> 
+    <action name="sqoop-importTable4">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+                <job-tracker>${jobTracker}</job-tracker>
+                <name-node>${nameNode}</name-node>
+                <prepare>
+                      <delete path="${nameNode}/user/niklas.andersen/imports/employees"/>
+                </prepare>
+                <command>import --connect jdbc:postgresql://10.27.10.66/sourcedb --username niklas --password hejsan --driver org.postgresql.Driver --connection-manager org.apache.sqoop.manager.GenericJdbcManager --table employees --as-sequencefile --jar-file employees.jar --class-name employees --target-dir /user/niklas.andersen/imports/employees</command>
+                <file>/user/niklas.andersen/workflows/import/table_jars/employees.jar</file>
+        </sqoop>
+        <ok to="sqoop-importTable5"/>
+        <error to="fail"/>
+    </action> 
+    <action name="sqoop-importTable5">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+                <job-tracker>${jobTracker}</job-tracker>
+                <name-node>${nameNode}</name-node>
+                <prepare>
+                      <delete path="${nameNode}/user/niklas.andersen/imports/departments"/>
+                </prepare>
+                <command>

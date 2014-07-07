@@ -1,0 +1,83 @@
+use niktestdb;
+add jar /opt/cloudera/parcels/CDH/lib/sqoop/sqoop-1.4.3-cdh4.4.0.jar;
+add jar departments.jar;
+add jar managers.jar;
+add jar employees.jar;
+add jar customers.jar;
+add jar orders.jar;
+add jar hive-sqoop-serde-1.0.0.jar;
+list jars;
+
+DROP TABLE IF EXISTS departments;
+CREATE EXTERNAL TABLE departments (
+  deptid INT,
+  deptname STRING,
+  city STRING
+)
+ROW FORMAT SERDE 'com.cloudera.sqoop.contrib.FieldMappableSerDe'
+WITH SERDEPROPERTIES (
+  "fieldmappable.classname" = "departments"
+)
+STORED AS SEQUENCEFILE
+LOCATION "hdfs://datavault-dev-db3.internal.machines:8020/user/niklas.andersen/departments";
+
+DROP TABLE IF EXISTS managers;
+CREATE EXTERNAL TABLE managers (
+  managerid INT,
+  deptid INT,
+  fname STRING,
+  lname STRING,
+  datehired STRING
+)
+ROW FORMAT SERDE 'com.cloudera.sqoop.contrib.FieldMappableSerDe'
+WITH SERDEPROPERTIES (
+  "fieldmappable.classname" = "managers"
+)
+STORED AS SEQUENCEFILE
+LOCATION "hdfs://datavault-dev-db3.internal.machines:8020/user/niklas.andersen/managers";
+
+DROP TABLE IF EXISTS employees;
+CREATE EXTERNAL TABLE employees (
+  empid INT,
+  deptid INT,
+  fname STRING,
+  lname STRING,
+  ssn BIGINT,
+  datehired STRING
+)
+ROW FORMAT SERDE 'com.cloudera.sqoop.contrib.FieldMappableSerDe'
+WITH SERDEPROPERTIES (
+  "fieldmappable.classname" = "employees"
+)
+STORED AS SEQUENCEFILE
+LOCATION "hdfs://datavault-dev-db3.internal.machines:8020/user/niklas.andersen/employees";
+
+DROP TABLE IF EXISTS orders;
+CREATE EXTERNAL TABLE orders (
+  orderid INT,
+  sellerid INT,
+  amount INT,
+  orderdate STRING,
+  customerid INT
+)
+ROW FORMAT SERDE 'com.cloudera.sqoop.contrib.FieldMappableSerDe'
+WITH SERDEPROPERTIES (
+  "fieldmappable.classname" = "orders"
+)
+STORED AS SEQUENCEFILE
+LOCATION "hdfs://datavault-dev-db3.internal.machines:8020/user/niklas.andersen/orders";
+
+DROP TABLE IF EXISTS customers;
+CREATE EXTERNAL TABLE customers (
+  customerid INT,
+  fname STRING,
+  lname STRING,
+  street STRING,
+  city STRING
+)
+ROW FORMAT SERDE 'com.cloudera.sqoop.contrib.FieldMappableSerDe'
+WITH SERDEPROPERTIES (
+  "fieldmappable.classname" = "customers"
+)
+STORED AS SEQUENCEFILE
+LOCATION "hdfs://datavault-dev-db3.internal.machines:8020/user/niklas.andersen/customers";

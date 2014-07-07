@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow-app xmlns="uri:oozie:workflow:0.4" name="${jobName}">
+    <parameters>
+       <property>
+            <name>hiveSiteLocation</name>
+            <description>Path to a hive-site.xml on hdfs.</description>
+        </property>
+    </parameters>
+    <credentials>
+        <credential name='hive_credentials' type='hcat'>
+            <property>
+                <name>hcat.metastore.uri</name>
+                <value>${hiveMetastoreUris}</value>
+            </property>
+            <property>
+                <name>hcat.metastore.principal</name>
+                <value>${hcatMetastorePrincipal}</value>
+            </property>
+        </credential>
+    </credentials>
+    <start to="hive-resultTables"/>
+    <action name="hive-resultTables" cred="hive_credentials">
+        <hive xmlns="uri:oozie:hive-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+                <job-xml>${hiveSiteLocation}</job-xml>
+                <script>/user/niklas.andersen/workflows/resultTables/queries.sql</script>
+      </hive>
+        <ok to="end" />
+        <error to="fail" />
+    </action>
+    <kill name="fail">
+        <message>Action failed, error Message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
+
+ 
